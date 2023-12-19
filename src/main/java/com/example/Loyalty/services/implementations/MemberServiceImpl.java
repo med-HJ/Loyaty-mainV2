@@ -116,69 +116,6 @@ public int countMembersByLevel(Long levelId) {
         return codeBuilder.toString();
     }
 
-//    public void updateMemberLevel(Long memberId) {
-//        MemberDTO memberDTO = getById(memberId);
-//        if (memberDTO != null) {
-//            Level currentLevel = levelRepository.findById(memberDTO.getLevelId()).orElse(null);
-//            System.out.println(currentLevel.getMinPoints());
-//            if (currentLevel != null) {
-//                if (memberDTO.getTotalPoints() >= currentLevel.getMinPoints()) {
-//                    List<Level> higherLevels = levelRepository.findByMinPointsGreaterThan(currentLevel.getMinPoints());
-////                    System.out.println(higherLevels.toString());
-//                    Level nextLevel = higherLevels.stream()
-//                            .min(Comparator.comparing(Level::getMinPoints))
-//                            .orElse(null);
-//                    System.out.println(nextLevel.getMinPoints());
-//                    if (nextLevel != null) {
-//                        memberDTO.setLevelId(nextLevel.getId());
-//                        saveMember(memberDTO);
-//                    }
-//                }
-//            }
-//        }
-//    }
-//public Level updateMemberLevel(Long memberId) {
-//    MemberDTO memberDTO = getById(memberId);
-//    if (memberDTO != null) {
-//        Level currentLevel = levelRepository.findById(memberDTO.getLevelId()).orElse(null);
-//        if (currentLevel != null) {
-//            if (memberDTO.getTotalPoints() >= currentLevel.getMinPoints()) {
-//                List<Level> higherLevels = levelRepository.findByMinPointsGreaterThan(currentLevel.getMinPoints());
-//                Level nextLevel = higherLevels.stream()
-//                        .min(Comparator.comparing(Level::getMinPoints))
-//                        .orElse(null);
-//                return nextLevel;
-//            }
-//        }
-//    }
-//    return null;
-//}
-//public Level updateMemberLevel(Long memberId) {
-//    MemberDTO memberDTO = getById(memberId);
-//    if (memberDTO != null) {
-//        List<Level> higherLevels = levelRepository.findAllByOrderByMinPointsAsc();
-//
-//        List<Level> eligibleLevels = higherLevels.stream()
-//                .filter(level -> level.getMinPoints() <= memberDTO.getTotalPoints())
-//                .collect(Collectors.toList());
-//
-//        Level nextLevel = eligibleLevels.stream()
-//                .max(Comparator.comparing(Level::getMinPoints))
-//                .orElse(null);
-//
-//        if (nextLevel != null) {
-//            memberDTO.setLevelId(nextLevel.getId());
-//            saveMember(memberDTO);
-//        }
-//
-//        return nextLevel;
-//    }
-//    return null;
-//}
-
-
-
-
     @Override
     public Boolean deleteMember(Long id) {
         try {
@@ -227,7 +164,7 @@ public void redeemPointsByReward(Long memberId, Long rewardId) {
 
             // Update the reward's availability
             rewardDTO.setStock(reward.getStock() - 1);
-            rewardService.updateReward(rewardId, rewardDTO); // Assuming you have an updateReward method in RewardService
+            rewardService.updateReward(rewardId, rewardDTO, rewardDTO.getLevelId()); // Assuming you have an updateReward method in RewardService
 
             // Save the updated member using the MemberService
             saveMember(memberDTO);
